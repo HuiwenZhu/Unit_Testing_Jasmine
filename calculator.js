@@ -1,11 +1,10 @@
-
+let principleAmount ;
+let loanYears ;
+let rate ;
 
 window.addEventListener('DOMContentLoaded', function () {
   const form = document.getElementById("calc-form");
   if (form) {
-    let principleAmount = document.getElementById("loan-amount").value;
-    let loanYears = document.getElementById("loan-years").value;
-    let rate = document.getElementById("loan-rate").value;
     setupIntialValues();
     form.addEventListener("submit", function(e) {
       e.preventDefault();
@@ -15,8 +14,12 @@ window.addEventListener('DOMContentLoaded', function () {
 });
 
 function getCurrentUIValues() {
+  principleAmount = document.getElementById("loan-amount").value;
+  loanYears = document.getElementById("loan-years").value;
+  rate = document.getElementById("loan-rate").value;
   return {
-    amount: +(principleAmount),
+    
+    amount: +(principleAmount),//Number(pricipleAmount)
     years: +(loanYears),
     rate: +(rate),
   }
@@ -31,6 +34,9 @@ function setupIntialValues() {
   principleAmount = defaultValue.amount;
   loanYears = defaultValue.years;
   rate = defaultValue.yearlyRate;
+  document.getElementById("loan-amount").value = principleAmount;
+  document.getElementById("loan-years").value=loanYears;
+  document.getElementById("loan-rate").value = rate;
   console.log( principleAmount, loanYears, rate);
 }
 
@@ -44,9 +50,13 @@ function update() {
 // calculate the monthly payment.  The output should be a string
 // that always has 2 decimal places.
 function calculateMonthlyPayment(values) {
- const monthlyRate = Math.floor((values.rate /100) /12);
+  debugger;
+ const monthlyRate = (values.rate /100) /12;
   const n = values.years * 12;
-  monthlyPayment = (values.amount * monthlyRate) / (1 - Math.pow((1 + monthlyRate), -n)).toFixed(2);
+  let payAmount = values.amount * monthlyRate;
+  let aRate = (1 - Math.pow((1 + monthlyRate), -n));
+  monthlyPayment = (payAmount / aRate).toFixed(2);
+  
   return monthlyPayment;
 }
 
